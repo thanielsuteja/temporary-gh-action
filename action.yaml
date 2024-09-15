@@ -1,0 +1,13 @@
+name: 'fetch rls'
+description: 'Fetch latest release ticket metadata'
+inputs:
+  parentTicket:
+    description: 'Release parent ticket'
+    required: true
+    default: 'CXT-1876'
+outputs:
+  whatever:
+    description: 'Whatever'
+runs:
+  using: 'node20'
+  main: 'index.js'
