@@ -5,6 +5,10 @@ inputs:
     description: 'Release parent ticket'
     required: true
     default: 'CXT-1876'
+  jira_secret:
+    description: 'Jira secret'
+    required: true
+    default: 'XXXXX'
 outputs:
   whatever:
     description: 'Whatever'

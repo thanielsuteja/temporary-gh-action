@@ -23,7 +23,7 @@ async function callJiraAPI(serviceName) {
     const resp = await fetch(url, {
         method: 'POST',
         headers: {
-            'Authorization': `Basic ${core.getInput('JR')}`,
+            'Authorization': `Basic ${core.getInput('jira_secret')}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
