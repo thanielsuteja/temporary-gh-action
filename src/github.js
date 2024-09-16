@@ -7,12 +7,13 @@ async function compareCommits(baseCommit, serviceName) {
 
     const payload = await callGithubApi(baseCommit, headCommit)
 
-    core.info(JSON.stringify(payload))
     return extractDiffCommits(serviceName, payload)
 }
 
 async function callGithubApi(baseHash, headHash) {
-    const url = `https://api.github.com/repos/traveloka/${core.getInput('repository_name')}/compare/${baseHash}...${headHash}`
+    // TODO: change `thanielsuteja` with `traveloka`
+    // const url = `https://api.github.com/repos/traveloka/${core.getInput('repository_name')}/compare/${baseHash}...${headHash}`
+    const url = `https://api.github.com/repos/thanielsuteja/${core.getInput('repository_name')}/compare/${baseHash}...${headHash}`
     core.info(url)
 
     const resp = await fetch(url, {
@@ -23,17 +24,17 @@ async function callGithubApi(baseHash, headHash) {
         },
     })
 
-    // if (resp.status !== 200)
-    //     throw 'An error occurred while comparing commits.'
+    if (resp.status !== 200) {
+        core.error(resp.message)
+        throw 'An error occurred while comparing commits.'
+    }
 
-    core.info('bahaya')
     return resp.json()
 }
 
 function extractDiffCommits(serviceName, payload) {
     serviceName = serviceName.toUpperCase()
 
-    core.info('nyape ga?')
     const SERVICE_REGEX = new RegExp(`\[[\\w\| ]*${serviceName}[\\w\| ]*\]`),
         {
             commits: rawCommits,
