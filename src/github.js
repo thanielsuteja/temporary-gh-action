@@ -5,18 +5,15 @@ const ALL_SERVICE_REGEX = new RegExp(/\[[\w ]*ALL[\w ]*\]/)
 async function compareCommits(baseCommit, serviceName) {
     const headCommit = core.getInput('head_commit', { required: true })
 
-    let payload
-    try {
-        payload = await callGithubApi(baseCommit, headCommit)
-    } catch (smth) {
-        throw JSON.stringify(smth)
-    }
+    const payload = await callGithubApi(baseCommit, headCommit)
 
+    core.info(JSON.stringify(payload))
     return extractDiffCommits(serviceName, payload)
 }
 
 async function callGithubApi(baseHash, headHash) {
     const url = `https://api.github.com/repos/traveloka/${core.getInput('repository_name')}/compare/${baseHash}...${headHash}`
+    core.info(url)
 
     const resp = await fetch(url, {
         headers: {
@@ -26,11 +23,10 @@ async function callGithubApi(baseHash, headHash) {
         },
     })
 
-    core.info('bahaya')
-    if (resp.status !== 200)
-        throw resp.json()
-    core.info('bahaya')
+    // if (resp.status !== 200)
+    //     throw 'An error occurred while comparing commits.'
 
+    core.info('bahaya')
     return resp.json()
 }
 

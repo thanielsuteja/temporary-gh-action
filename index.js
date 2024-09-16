@@ -17,7 +17,7 @@ async function run() {
             } = await jira_search.searchPreviousReleaseMetadata(serviceName)
 
         const previousCommitHash = util.extractCommitFromArtifact(prevArtifact),
-            commitComparison = github.compareCommits(previousCommitHash, serviceName)
+            commitComparison = await github.compareCommits(previousCommitHash, serviceName)
 
         // Set outputs for other workflow steps to use
         core.setOutput('whatever', `${prevArtifact} and ${commitComparison.comparisonUrl}`)
