@@ -1,6 +1,6 @@
 const AWS_ARTIFACT_REGEX = new RegExp(/amazonaws\.com\/(\w+)-.*?:([\d\w]*)/)
 const GITHUB_BUILD_VERSION_REGEX = new RegExp(/([\d\w]+)-.*/)
-const COMMIT_HASH_REGEX = new RegExp(/^[\da-z]{8,}$/)
+const COMMIT_HASH_REGEX = new RegExp(/^[\da-z]{4,}$/)
 const core = require("@actions/core")
 
 function extractCommitFromArtifact(buildArtifact) {

@@ -23,6 +23,7 @@ async function run() {
         core.setOutput('whatever', `${prevArtifact} and ${commitComparison.comparisonUrl}`)
     } catch (error) {
         // Fail the workflow run if an error occurs
+        core.error(`Error: ${error.message}`)
         core.setFailed(error.message)
     }
 }
