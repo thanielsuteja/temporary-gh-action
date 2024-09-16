@@ -3,9 +3,7 @@ const core = require('@actions/core')
 async function searchPreviousReleaseMetadata(serviceName) {
     const payload = await callJiraAPI(serviceName)
 
-    const prevReleaseMetadata = extractMetadata(payload)
-
-    return prevReleaseMetadata
+    return extractReleaseTicketMetadata(payload)
 }
 
 async function callJiraAPI(serviceName) {
@@ -31,24 +29,19 @@ async function callJiraAPI(serviceName) {
     })
 
     if (resp.status !== 200)
-        throw {
-            error: 'An error occurred while searching for the latest release ticket.',
-            status: resp.status,
-        }
+        throw 'An error occurred while searching for the latest release ticket.'
 
     return resp.json()
 }
 
-function extractMetadata(payload) {
+function extractReleaseTicketMetadata(payload) {
     const {
         customfield_21571: prevBranch,
         customfield_21572: prevArtifact,
     } = payload.issues[0].fields
 
     if (!prevArtifact || !prevBranch)
-        throw {
-            error: '"Release Branch" and/or "Artifact" wasn\'t found in the latest ticket.',
-        }
+        throw '"Release Branch" and/or "Artifact" wasn\'t found in the latest ticket.'
 
     return {
         prevBranch,
@@ -57,7 +50,7 @@ function extractMetadata(payload) {
 }
 
 function extractParentTicket() {
-    const parentTicket = core.getInput("parentTicket");
+    const parentTicket = core.getInput("parent_ticket");
     if (!parentTicket)
         throw "Project parent ticket not found."
 

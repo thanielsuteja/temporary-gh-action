@@ -1,14 +1,25 @@
 name: 'fetch rls'
 description: 'Fetch latest release ticket metadata'
 inputs:
-  parentTicket:
+  parent_ticket:
     description: 'Release parent ticket'
     required: true
     default: 'CXT-1876'
   jira_secret:
     description: 'Jira secret'
     required: true
-    default: 'XXXXX'
+  head_commit:
+    description: 'Current HEAD commit'
+    required: true
+  repository_name:
+    description: 'Repository name'
+    required: true
+  github_secret:
+    description: 'Github secret'
+    required: true
+  branch_name:
+    description: 'Released branch name'
+    required: true
 outputs:
   whatever:
     description: 'Whatever'
