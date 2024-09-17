@@ -2,7 +2,7 @@ name: 'fetch rls'
 description: 'Fetch latest release ticket metadata'
 inputs:
   parent_ticket:
-    description: 'Release parent ticket'
+    description: 'Release parent ticket. Usually indicates that the current ticket is a "release" ticket'
     required: true
     default: 'CXT-1876'
   jira_secret:
@@ -21,8 +21,8 @@ inputs:
     description: 'Released branch name'
     required: true
 outputs:
-  whatever:
-    description: 'Whatever'
+  rls_ticket_url:
+    description: 'Generated Jira release ticket URL'
 runs:
   using: 'node20'
   main: 'index.js'
