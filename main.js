@@ -33,7 +33,6 @@ async function run() {
         },
             newReleaseTicket = await jira_create.createReleaseTicket(releaseMetadata, commitComparison, currBranchMetadata)
 
-        core.notice(`${serviceName.toUpperCase()} Release Ticket URL`, { title: `${newReleaseTicket.url}` })
         core.notice(`${newReleaseTicket.url}`)
 
         core.setOutput('rlsTicketUrl', newReleaseTicket.url)

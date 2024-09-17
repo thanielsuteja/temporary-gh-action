@@ -38,10 +38,15 @@ async function callJiraAPI(serviceName) {
 }
 
 function extractReleaseTicketMetadata(payload) {
-    const {
-        customfield_21571: prevBranch,
-        customfield_21572: prevArtifact,
-    } = payload.issues[0].fields
+    const previousReleaseTicketUrl = `https://29022131.atlassian.net/browse/${payload.issues[0].key}`,
+        {
+            customfield_21571: prevBranch,
+            customfield_21572: prevArtifact,
+        } = payload.issues[0].fields
+
+
+    core.info(`Previous release ticket found at ${previousReleaseTicketUrl}`)
+    core.notice(previousReleaseTicketUrl, {title: "Previous Release Ticket"})
 
     if (!prevArtifact || !prevBranch)
         throw '"Release Branch" and/or "Artifact" wasn\'t found in the latest ticket.'

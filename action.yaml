@@ -27,7 +27,6 @@ inputs:
   jira_cc_domain_id:
     description: 'CC Domain ID value in our Jira system'
     required: false
-    default: '35156'
 
 outputs:
   rls_ticket_url:
