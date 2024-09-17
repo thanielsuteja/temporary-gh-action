@@ -1,9 +1,9 @@
-const account_mapping = require('./account_mapping')
+const action_config = require('./action_config')
 const util = require('./util')
 const { doc, h3, ul, li, text_link, text_simple, text_code } = require('./doc')
 const core = require('@actions/core')
 
-async function createReleaseTicket(releaseMetadata, commitComparison, branchMetadata) {
+async function createReleaseTicket(releaseMetadata, commitComparison, branchMetadata, serviceName) {
     const {
         newReleaseBranch,
         newCommitHash,
@@ -12,7 +12,7 @@ async function createReleaseTicket(releaseMetadata, commitComparison, branchMeta
     const summary = util.composeSummary(branchMetadata),
         description = composeDescription(releaseMetadata, commitComparison)
 
-    const requestBody = composeRequestBody(summary, description, newReleaseBranch, newCommitHash),
+    const requestBody = composeRequestBody(summary, description, newReleaseBranch, newCommitHash, serviceName),
         newReleaseTicket = await callJiraIssueCreationApi(requestBody)
 
     return {
@@ -38,12 +38,12 @@ async function callJiraIssueCreationApi(body) {
     return resp.json()
 }
 
-function composeRequestBody(summary, description, newReleaseBranch, newCommitHash) {
+function composeRequestBody(summary, description, newReleaseBranch, newCommitHash, serviceName) {
     const {
         project,
         parentTicket
     } = util.extractParentTicket(),
-        triggeringActorAccountId = account_mapping.getJiraAccountId()
+        triggeringActorAccountId = action_config.getJiraAccountId()
 
     return {
         fields: {
@@ -74,7 +74,7 @@ function composeRequestBody(summary, description, newReleaseBranch, newCommitHas
                 key: parentTicket
             },
             customfield_20971: [{ // CC Domain
-                id: core.getInput('jira_cc_domain_id')
+                id: action_config.getCcDomainId(serviceName)
             }],
         }
     }

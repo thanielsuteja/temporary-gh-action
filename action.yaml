@@ -24,9 +24,6 @@ inputs:
   triggering_actor:
     description: 'Workflow triggering actor'
     required: false
-  jira_cc_domain_id:
-    description: 'CC Domain ID value in our Jira system'
-    required: false
 
 outputs:
   rls_ticket_url:

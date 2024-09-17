@@ -31,7 +31,7 @@ async function run() {
             newReleaseBranch: currentBranch,
             newCommitHash: head_commit_hash,
         },
-            newReleaseTicket = await jira_create.createReleaseTicket(releaseMetadata, commitComparison, currBranchMetadata)
+            newReleaseTicket = await jira_create.createReleaseTicket(releaseMetadata, commitComparison, currBranchMetadata, serviceName)
 
         core.notice(`${newReleaseTicket.url}`)
 
