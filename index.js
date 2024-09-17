@@ -7,6 +7,9 @@ const util = require('./src/util')
 async function run() {
     try {
         const HEAD_COMMIT_HASH = core.getInput('head_commit', { required: true })
+        const TRIGGERING_ACTOR = core.getInput('triggering_actor')
+
+        core.info(TRIGGERING_ACTOR)
 
         const currBranchMetadata = util.extractBranchMetadata(),
             {

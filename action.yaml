@@ -20,6 +20,9 @@ inputs:
   branch_name:
     description: 'Released branch name'
     required: true
+  triggering_actor:
+    description: 'Workflow triggering actor'
+    required: false
 outputs:
   rlsTicketUrl:
     description: 'Generated Jira release ticket URL'
