@@ -8,7 +8,7 @@ async function createReleaseTicket(releaseMetadata, commitComparison, branchMeta
         newCommitHash,
     } = releaseMetadata
 
-    const summary = util.composeSummary(branchMetadata, isHotfix),
+    const summary = util.composeSummary(branchMetadata),
         description = composeDescription(releaseMetadata, commitComparison)
 
     const requestBody = composeRequestBody(summary, description, newReleaseBranch, newCommitHash),

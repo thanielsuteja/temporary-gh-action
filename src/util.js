@@ -63,7 +63,7 @@ function extractBranchMetadata() {
     }
 }
 
-function composeSummary(branchMetadata, isHotfix) {
+function composeSummary(branchMetadata, isHotfix = false) {
     const {
         releaseDate,
         releaseRevision,
