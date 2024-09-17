@@ -1,5 +1,6 @@
 name: 'create release ticket'
 description: 'Create a Jira release ticket'
+
 inputs:
   parent_ticket:
     description: 'Release parent ticket. Usually indicates that the current ticket is a \"release\" ticket'
@@ -27,9 +28,11 @@ inputs:
     description: 'CC Domain ID value in our Jira system'
     required: false
     default: '35156'
+
 outputs:
   rls_ticket_url:
     description: 'The generated Jira release ticket URL'
+
 runs:
   using: 'node20'
   main: 'index.js'
