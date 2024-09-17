@@ -2,7 +2,7 @@ name: 'fetch rls'
 description: 'Fetch latest release ticket metadata'
 inputs:
   parent_ticket:
-    description: 'Release parent ticket. Usually indicates that the current ticket is a "release" ticket'
+    description: 'Release parent ticket. Usually indicates that the current ticket is a \"release\" ticket'
     required: true
     default: 'CXT-1876'
   jira_secret:

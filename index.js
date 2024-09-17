@@ -28,6 +28,7 @@ async function run() {
             newCommitHash: HEAD_COMMIT_HASH,
         },
             newReleaseTicket = await jira_create.createReleaseTicket(releaseMetadata, commitComparison, currBranchMetadata)
+        core.info(newReleaseTicket)
 
         core.setOutput('rls_ticket_url', newReleaseTicket.url)
     } catch (error) {
