@@ -30,7 +30,7 @@ async function run() {
             newReleaseTicket = await jira_create.createReleaseTicket(releaseMetadata, commitComparison, currBranchMetadata)
         core.info(newReleaseTicket)
 
-        core.setOutput('rls_ticket_url', newReleaseTicket.url)
+        core.setOutput('rlsTicketUrl', newReleaseTicket.url)
     } catch (error) {
         core.setFailed(error)
     }

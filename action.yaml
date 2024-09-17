@@ -21,7 +21,7 @@ inputs:
     description: 'Released branch name'
     required: true
 outputs:
-  rls_ticket_url:
+  rlsTicketUrl:
     description: 'Generated Jira release ticket URL'
 runs:
   using: 'node20'
