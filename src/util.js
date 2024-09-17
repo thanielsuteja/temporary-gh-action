@@ -39,12 +39,12 @@ function extractCommitFromArtifact(buildArtifact) {
 }
 
 function extractBranchMetadata() {
-    const branchName = core.getInput('branch_name')
-    if (!branchName)
+    const branch_name = core.getInput('branch_name')
+    if (!branch_name)
         throw 'Branch name not found.'
 
     const RELEASE_BRANCH_REGEX = new RegExp(/release\/([\d\w]+)?\/(\d{4}-\d{2}-\d{2})\/(\d)/),
-        releaseMatches = branchName.match(RELEASE_BRANCH_REGEX);
+        releaseMatches = branch_name.match(RELEASE_BRANCH_REGEX);
     if (!releaseMatches)
         throw 'Branch name invalid.'
 
@@ -56,7 +56,7 @@ function extractBranchMetadata() {
     ] = releaseMatches
 
     return {
-        branchName,
+        branchName: branch_name,
         serviceName,
         releaseDate,
         releaseRevision
@@ -95,19 +95,19 @@ function extractIssue(issue = {}) {
 }
 
 function extractParentTicket() {
-    const parentTicket = core.getInput("parent_ticket");
-    if (!parentTicket)
+    const parent_ticket = core.getInput("parent_ticket");
+    if (!parent_ticket)
         throw "Project parent ticket not found."
 
     const ticketRegex = new RegExp(/([\d\w_]+)-\d+/),
-        matches = parentTicket.match(ticketRegex);
+        matches = parent_ticket.match(ticketRegex);
 
     if (!matches)
-        throw `Ticket ${parentTicket} has an invalid format.`
+        throw `Ticket ${parent_ticket} has an invalid format.`
 
     return {
         project: matches[1],
-        parentTicket,
+        parentTicket: parent_ticket,
     }
 }
 

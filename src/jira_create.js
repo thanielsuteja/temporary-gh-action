@@ -1,3 +1,4 @@
+const account_mapping = require('./account_mapping')
 const util = require('./util')
 const { doc, h3, ul, li, text_link, text_simple, text_code } = require('./doc')
 const core = require('@actions/core')
@@ -41,7 +42,8 @@ function composeRequestBody(summary, description, newReleaseBranch, newCommitHas
     const {
         project,
         parentTicket
-    } = util.extractParentTicket()
+    } = util.extractParentTicket(),
+        triggeringActorAccountId = account_mapping.getJiraAccountId()
 
     return {
         fields: {
@@ -52,9 +54,13 @@ function composeRequestBody(summary, description, newReleaseBranch, newCommitHas
             issuetype: {
                 id: "10100"
             },
-            assignee: {
-                id: "712020:c4291f87-dc9b-4152-b4c8-9c8bd61da3de"
-            },
+            ...(
+                triggeringActorAccountId && {
+                    assignee: {
+                        id: triggeringActorAccountId
+                    }
+                }
+            ),
             priority: {
                 id: "3"
             },
@@ -62,13 +68,13 @@ function composeRequestBody(summary, description, newReleaseBranch, newCommitHas
                 key: project
             },
             components: [{
-                id: "18508"
+                id: "18508" // "BACKEND"
             }],
             parent: {
                 key: parentTicket
             },
-            customfield_20971: [{
-                id: "35156"
+            customfield_20971: [{ // CC Domain
+                id: core.getInput('jira_cc_domain_id')
             }],
         }
     }

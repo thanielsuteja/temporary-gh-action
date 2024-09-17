@@ -1,5 +1,5 @@
 {
-  "name": "temporary-gh-action",
+  "name": "create-release-ticket-action",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {

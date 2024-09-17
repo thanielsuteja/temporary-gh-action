@@ -1,31 +1,35 @@
-name: 'fetch rls'
-description: 'Fetch latest release ticket metadata'
+name: 'create release ticket'
+description: 'Create a Jira release ticket'
 inputs:
   parent_ticket:
     description: 'Release parent ticket. Usually indicates that the current ticket is a \"release\" ticket'
     required: true
     default: 'CXT-1876'
+  github_secret:
+    description: 'Github secret'
+    required: true
   jira_secret:
     description: 'Jira secret'
-    required: true
-  head_commit:
-    description: 'Current HEAD commit'
     required: true
   repository_name:
     description: 'Repository name'
     required: true
-  github_secret:
-    description: 'Github secret'
-    required: true
   branch_name:
     description: 'Released branch name'
+    required: true
+  head_commit:
+    description: 'Current HEAD commit'
     required: true
   triggering_actor:
     description: 'Workflow triggering actor'
     required: false
+  jira_cc_domain_id:
+    description: 'CC Domain ID value in our Jira system'
+    required: false
+    default: '35156'
 outputs:
-  rlsTicketUrl:
-    description: 'Generated Jira release ticket URL'
+  rls_ticket_url:
+    description: 'The generated Jira release ticket URL'
 runs:
   using: 'node20'
   main: 'index.js'
