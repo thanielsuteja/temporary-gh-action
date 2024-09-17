@@ -1,10 +1,9 @@
 const core = require('@actions/core')
 
 const ALL_SERVICE_REGEX = new RegExp(/\[[\w ]*ALL[\w ]*\]/)
+const ALL_CXP_SERVICES_REGEX = new RegExp(/\[\s*CXP\*\s*\]/)
 
-async function compareCommits(baseCommit, serviceName) {
-    const headCommit = core.getInput('head_commit', { required: true })
-
+async function compareCommits(baseCommit, headCommit, serviceName) {
     const payload = await callGithubApi(baseCommit, headCommit)
 
     return extractDiffCommits(serviceName, payload)
@@ -14,7 +13,6 @@ async function callGithubApi(baseHash, headHash) {
     // TODO: change `thanielsuteja` with `traveloka`
     // const url = `https://api.github.com/repos/traveloka/${core.getInput('repository_name')}/compare/${baseHash}...${headHash}`
     const url = `https://api.github.com/repos/thanielsuteja/${core.getInput('repository_name')}/compare/${baseHash}...${headHash}`
-    core.info(url)
 
     const resp = await fetch(url, {
         headers: {
@@ -58,6 +56,10 @@ function extractDiffCommits(serviceName, payload) {
                 summary,
                 url,
             }
+        }).filter(commit => {
+            const commitSummary = commit.summary.toUpperCase()
+
+            return SERVICE_REGEX.test(commitSummary) || ALL_SERVICE_REGEX.test(commitSummary) || ALL_CXP_SERVICES_REGEX.test(commitSummary)
         })
 
     if (!commits.length)

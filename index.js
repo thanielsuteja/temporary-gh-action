@@ -1,28 +1,36 @@
 const core = require('@actions/core')
-const jira_search = require('./src/jira_search.js')
-const github = require('./src/github.js')
-const util = require('./src/util.js')
+const jira_search = require('./src/jira_search')
+const jira_create = require('./src/jira_create')
+const github = require('./src/github')
+const util = require('./src/util')
 
 async function run() {
     try {
-        const {
-            branchName: currentBranch,
-            serviceName,
-            releaseDate,
-            releaseRevision,
-        } = util.extractBranchMetadata(),
+        const HEAD_COMMIT_HASH = core.getInput('head_commit', { required: true })
+
+        const currBranchMetadata = util.extractBranchMetadata(),
+            {
+                branchName: currentBranch,
+                serviceName
+            } = currBranchMetadata,
             {
                 prevArtifact,
                 prevBranch,
             } = await jira_search.searchPreviousReleaseMetadata(serviceName)
 
         const previousCommitHash = util.extractCommitFromArtifact(prevArtifact),
-            commitComparison = await github.compareCommits(previousCommitHash, serviceName)
+            commitComparison = await github.compareCommits(previousCommitHash, HEAD_COMMIT_HASH, serviceName)
 
-        // Set outputs for other workflow steps to use
-        core.setOutput('whatever', `${prevArtifact} and ${commitComparison.comparisonUrl}`)
+        const releaseMetadata = {
+            oldReleaseBranch: prevBranch,
+            oldCommitHash: previousCommitHash,
+            newReleaseBranch: currentBranch,
+            newCommitHash: HEAD_COMMIT_HASH,
+        },
+            newReleaseTicket = await jira_create.createReleaseTicket(releaseMetadata, commitComparison, currBranchMetadata)
+
+        core.setOutput('rls_ticket_url', newReleaseTicket.url)
     } catch (error) {
-        // Fail the workflow run if an error occurs
         core.setFailed(error)
     }
 }

@@ -1,4 +1,5 @@
 const core = require('@actions/core')
+const util = require('./util')
 
 async function searchPreviousReleaseMetadata(serviceName) {
     const payload = await callJiraAPI(serviceName)
@@ -7,8 +8,10 @@ async function searchPreviousReleaseMetadata(serviceName) {
 }
 
 async function callJiraAPI(serviceName) {
-    const url = `https://29022131.atlassian.net/rest/api/3/search`,
-        { project, parentTicket } = extractParentTicket(),
+    const {
+        project,
+        parentTicket
+    } = util.extractParentTicket(),
         requestBody = {
             jql: `summary ~ \"${serviceName}\" AND project = \"${project}\" AND parent = \"${parentTicket}\" ORDER BY created DESC`,
             maxResults: 1,
@@ -18,7 +21,7 @@ async function callJiraAPI(serviceName) {
             ]
         }
 
-    const resp = await fetch(url, {
+    const resp = await fetch("https://29022131.atlassian.net/rest/api/3/search", {
         method: 'POST',
         headers: {
             'Authorization': `Basic ${core.getInput('jira_secret')}`,
@@ -46,23 +49,6 @@ function extractReleaseTicketMetadata(payload) {
     return {
         prevBranch,
         prevArtifact,
-    }
-}
-
-function extractParentTicket() {
-    const parentTicket = core.getInput("parent_ticket");
-    if (!parentTicket)
-        throw "Project parent ticket not found."
-
-    const ticketRegex = new RegExp(/([\d\w_]+)-\d+/),
-        matches = parentTicket.match(ticketRegex);
-
-    if (!matches)
-        throw `Ticket ${parentTicket} has an invalid format.`
-
-    return {
-        project: matches[1],
-        parentTicket,
     }
 }
 

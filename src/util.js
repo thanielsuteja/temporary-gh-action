@@ -94,9 +94,27 @@ function extractIssue(issue = {}) {
     }
 }
 
+function extractParentTicket() {
+    const parentTicket = core.getInput("parent_ticket");
+    if (!parentTicket)
+        throw "Project parent ticket not found."
+
+    const ticketRegex = new RegExp(/([\d\w_]+)-\d+/),
+        matches = parentTicket.match(ticketRegex);
+
+    if (!matches)
+        throw `Ticket ${parentTicket} has an invalid format.`
+
+    return {
+        project: matches[1],
+        parentTicket,
+    }
+}
+
 module.exports = {
     extractIssue,
     composeSummary,
     extractCommitFromArtifact,
     extractBranchMetadata,
+    extractParentTicket,
 }
